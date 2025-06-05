@@ -171,9 +171,9 @@ settings = Settings()
         ```
     The API will be accessible at `ws://localhost:8000/ws/lipsync`.
 
-    Download Pre-build Docker Image: ""
-
-3.  **Download the Docker image:**
+3.  **Download Pre-built Docker Image**
+     * [Docker Hub](https://hub.docker.com/repository/docker/khoatran2002/lipsync-api)
+     * [.tar File](https://drive.google.com/drive/folders/1s0711lknaxdQWsTKvUk_RxV_xOkbrh81?usp=sharing)
     
 ---
 
