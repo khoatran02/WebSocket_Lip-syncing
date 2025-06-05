@@ -224,6 +224,7 @@ Successful Response:
 }
 ```
 * video: Base64 encoded string of the generated MP4 video.
+
 Error Response:
 ```json
 {
@@ -238,9 +239,9 @@ You can use the provided client.py to test the API.
 
 1.  Ensure the FastAPI server is running (either locally or in Docker).
 2.  Place sample files:
-* Put a sample image (e.g., Obama.jpg) in an input_image/ directory relative to where you run client.py.
-* Put a sample audio file (e.g., ai.wav) in an input_audios/ directory relative to where you run client.py.
-* Update the paths in client.py if your files are named or located differently.
+    * Put a sample image (e.g., Obama.jpg) in an input_image/ directory relative to where you run client.py.
+    * Put a sample audio file (e.g., ai.wav) in an input_audios/ directory relative to where you run client.py.
+    * Update the paths in client.py if your files are named or located differently.
 
 3. Run the client script:
 ```
