@@ -104,24 +104,14 @@ It's assumed your project is structured as follows for the Docker build and loca
 
 ### Downloading Pretrained Models
 
-The application requires pretrained models to function.
-1.  **Wav2Lip Model**:
-    * Download `wav2lip_gan.pth` (the main Wav2Lip model). You can typically find this in the original Wav2Lip repository or related resources.
-    * Place it in the `checkpoints/` directory (or the path specified in your `app/config.py` for `settings.wav2lip_path`).
-    Example: `checkpoints/wav2lip_gan.pth`
+| Model        | Directory           | Download Link  |
+| :------------- |:-------------| :-----:|
+| Wav2Lip           | [checkpoints/](https://github.com/saifhassan/Wav2Lip-HD/tree/main/checkpoints)   | [Link](https://drive.google.com/drive/folders/1tB_uz-TYMePRMZzrDMdShWUZZ0JK3SIZ?usp=sharing) |
+| ESRGAN            | [experiments/001_ESRGAN_x4_f64b23_custom16k_500k_B16G1_wandb/models/](https://github.com/saifhassan/Wav2Lip-HD/tree/main/experiments/001_ESRGAN_x4_f64b23_custom16k_500k_B16G1_wandb/models) | [Link](https://drive.google.com/file/d/1Al8lEpnx2K-kDX7zL2DBcAuDnSKXACPb/view?usp=sharing) |
+| Face_Detection    | [face_detection/detection/sfd/](https://github.com/saifhassan/Wav2Lip-HD/tree/main/face_detection/detection/sfd) | [Link](https://drive.google.com/file/d/1uNLYCPFFmO-og3WSHyFytJQLLYOwH5uY/view?usp=sharing) |
+| Real-ESRGAN       | Real-ESRGAN/gfpgan/weights/   | [Link](https://drive.google.com/drive/folders/1BLx6aMpHgFt41fJ27_cRmT8bt53kVAYG?usp=sharing) |
+| Real-ESRGAN       | Real-ESRGAN/weights/          | [Link](https://drive.google.com/file/d/1qNIf8cJl_dQo3ivelPJVWFkApyEAGnLi/view?usp=sharing) |
 
-2.  **Face Detection Models**:
-    * The `face-alignment` library (`face_detection.py` in your code) typically handles downloading its own pretrained models automatically upon first use or has them packaged. If it requires manual download for a specific version (like an `s3fd` model), refer to the `face-alignment` library's documentation.
-
-3.  **(Optional) Face Segmentation Model**:
-    * If you enable face segmentation (currently commented out in `processing.py`), download the required model (e.g., `79999_iter.pth` for BiSeNet).
-    * Place it in the `checkpoints/` directory (or the path specified in `app/config.py` for `settings.segmentation_path`).
-
-4.  **(Optional) Super Resolution Model**:
-    * If you enable super-resolution (currently commented out in `processing.py`), download the required SR model.
-    * Place it in the `checkpoints/` directory (or the path specified in `app/config.py` for `settings.sr_path`).
-
-Ensure the paths in your configuration file (`app/config.py`, accessed via `settings.model_path`) correctly point to these downloaded files.
 
 ### Configuration
 
@@ -183,6 +173,8 @@ Example for Wav2Lip:
         ```
     The API will be accessible at `ws://localhost:8000/ws/lipsync`.
 
+    Download Pre-build Docker Image: ""
+    
 ---
 
 ## API Usage
