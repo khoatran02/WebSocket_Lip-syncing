@@ -15,7 +15,7 @@ import tempfile
 
 mel_step_size = 16
 
-def load_models(wav2lip_path, segmentation_path, sr_path, device='cuda'):
+def load_models(wav2lip_path, segmentation_path, super_resolution_path, device='cuda'):
     """Load all required models"""
     models = {}
     
@@ -27,7 +27,7 @@ def load_models(wav2lip_path, segmentation_path, sr_path, device='cuda'):
     wav2lip.load_state_dict({k.replace('module.', ''): v for k, v in s.items()})
     models['wav2lip'] = wav2lip.to(device).eval()
     
-    # Load face segmentation model if path provided
+    #Load face segmentation model if path provided
     # if segmentation_path:
     #     print("Loading face segmentation model...")
     #     models['seg_net'] = init_parser(segmentation_path)
@@ -35,9 +35,9 @@ def load_models(wav2lip_path, segmentation_path, sr_path, device='cuda'):
     #     models['seg_net'] = None
     
     # # Load super-resolution model if path provided
-    # if sr_path:
+    # if super_resolution_path:
     #     print("Loading super-resolution model...")
-    #     models['sr_net'] = init_sr_model(sr_path)
+    #     models['sr_net'] = init_sr_model(super_resolution_path)
     # else:
     #     models['sr_net'] = None
     
@@ -139,7 +139,7 @@ def datagen(models, mels, image, pads, img_size, wav2lip_batch_size):
         yield img_batch_np, mel_batch_np, coords_batch
 
 def process_audio_image(models, input_data, fps=25., pads=[0, 10, 0, 0], 
-                       img_size=96, wav2lip_batch_size=128, no_segmentation=False, no_sr=False):
+                       img_size=96, wav2lip_batch_size=128, segmentation=False, super_resolution=False):
     
     """Process audio and image to generate lip-synced video"""
     device = next(models['wav2lip'].parameters()).device
@@ -192,11 +192,11 @@ def process_audio_image(models, input_data, fps=25., pads=[0, 10, 0, 0],
             pred = pred.cpu().numpy().transpose(0, 2, 3, 1) * 255.
 
             for p, (y1, y2, x1, x2) in zip(pred, coords):
-                # if not args.no_sr and sr_net:
+                # if super_resolution and sr_net:
                 #     p = enhance(sr_net, p)
                 p = cv2.resize(p.astype(np.uint8), (x2 - x1, y2 - y1))
                 
-                # if not args.no_segmentation and seg_net:
+                # if segmentation and seg_net:
                 #     p = swap_regions(face_image[y1:y2, x1:x2], p, seg_net)
                 
                 output_frame = image.copy()
@@ -205,7 +205,6 @@ def process_audio_image(models, input_data, fps=25., pads=[0, 10, 0, 0],
             
         out.release()
         
-
         video_path = os.path.join(temp_dir, "output.mp4")
         # Combine video and audio
         # ffmpeg_path = 'C:/ffmpeg/bin/ffmpeg.exe'  # Change if ffmpeg is not in PATH
@@ -228,8 +227,5 @@ def process_audio_image(models, input_data, fps=25., pads=[0, 10, 0, 0],
         # Convert output video to base64
         video_base64 = video_to_base64(video_path)
     
-
-    
-
     return video_base64
 

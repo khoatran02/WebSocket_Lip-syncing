@@ -8,8 +8,8 @@ class InputData(BaseModel):
     pads: List[int] = [0, 10, 0, 0]
     img_size: int = 96
     batch_size: int = 128
-    no_segmentation: bool = False
-    no_sr: bool = False
+    segmentation: bool = False
+    super_resolution: bool = False
 
 class OutputData(BaseModel):
     status: str  # "success" or "error"

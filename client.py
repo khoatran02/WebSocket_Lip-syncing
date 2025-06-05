@@ -83,8 +83,8 @@ async def send_audio_image():
                 "pads": [0, 10, 0, 0],
                 "img_size": 96,
                 "batch_size": 128,
-                "no_segmentation": False,
-                "no_sr": False,
+                "segmentation": False,
+                "super_resolution": False,
             }
             
             # Send data with timeout
@@ -99,7 +99,7 @@ async def send_audio_image():
             logger.info("Waiting for server response...")
             response = await asyncio.wait_for(
                 websocket.recv(),
-                timeout=300.0  # 5 minutes for processing
+                timeout=600.0  # 10 minutes for processing
             )
             logger.info("Received response from server")
             

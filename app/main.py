@@ -1,22 +1,10 @@
-import base64
-import io
-import cv2
-import numpy as np
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
-from PIL import Image
-import torch
-import audio
 from processing import load_models, process_audio_image
 from schemas import InputData
 from config import settings
 from contextlib import asynccontextmanager
-import os
-import tempfile
 import json
-
-# Ensure temp directory exists
-os.makedirs("temp", exist_ok=True)
 
 # Load models at startup
 models = {}
@@ -27,7 +15,7 @@ async def lifespan(app: FastAPI):
     models.update(load_models(
         wav2lip_path=settings.wav2lip_path,
         segmentation_path=settings.segmentation_path,
-        sr_path=settings.sr_path,
+        super_resolution_path=settings.sr_path,
         device=settings.device
     ))
     yield
@@ -55,8 +43,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 pads=input_data.pads,
                 img_size=input_data.img_size,
                 wav2lip_batch_size=input_data.batch_size,
-                no_segmentation=input_data.no_segmentation,
-                no_sr=input_data.no_sr,
+                segmentation=input_data.segmentation,
+                super_resolution=input_data.super_resolution,
             )
 
             print("Video processing completed")

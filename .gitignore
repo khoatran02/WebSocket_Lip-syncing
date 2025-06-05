@@ -2,4 +2,7 @@
 # input_images
 # output
 # test
+.gitignore
 app/checkpoints/*
+run.py
+lipsync-api.tar

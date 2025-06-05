@@ -8,7 +8,7 @@ Brief project description: This API uses [Chosen AI Model Name, e.g., Wav2Lip] t
 - [Installation](#installation)
   - [Local Setup](#local-setup)
   - [Downloading Pretrained Models](#downloading-pretrained-models)
-- [Running with Docker](#running-with-docker)
+- [Running the Application](#running-the-application)
 - [API Usage](#api-usage)
   - [WebSocket Endpoint](#websocket-endpoint)
   - [Input Format](#input-format)
@@ -37,36 +37,40 @@ The system enables real-time lip-syncing through a WebSocket interface:
 7.  The server sends a JSON response back to the client over WebSocket, containing the base64 encoded video and a status message.
 Models (Wav2Lip, face detector, and optional face segmentation/super-resolution) are loaded once at application startup for efficiency.
 
----
-
 ## Project Structure
 
 It's assumed your project is structured as follows for the Docker build and local execution (especially `main.py` and other modules being inside an `app` directory):
+
 ```
 .
-├── app/
-│   ├── main.py                 # FastAPI application
-│   ├── processing.py           # Core lip-sync logic
-│   ├── wav2lip_models.py       # Wav2Lip model definition
-│   ├── face_detection.py       # Face detection utilities
-│   ├── face_parsing.py         # Face segmentation utilities (optional)
-│   ├── audio.py                # Audio processing utilities
-│   ├── utilis.py               # General utilities (e.g., base64 conversion)
-│   ├── config.py               # Configuration settings (e.g., model paths)
-│   ├── schemas.py              # Pydantic schemas for input data
-│   └── basicsr/                # Directory for BasicSR super-resolution (optional)
-├── checkpoints/                # Directory for pre-trained model files
-│   ├── wav2lip_gan.pth
-│   └── ... (other model files like segmentation, sr if used)
-├── input_image/
-│   └── Obama.jpg               # Sample image for client testing
-├── input_audios/
-│   └── ai.wav                  # Sample audio for client testing
-├── client.py                   # Example WebSocket client
-├── Dockerfile
-├── requirements.txt
-└── README.md
+├── app/                       
+│   ├── main.py                # FastAPI application
+│   ├── processing.py          # Processing logic
+│   ├── wav2lip_models.py      # Wav2Lip model definition
+│   ├── face_detection.py      # Face detection utilities
+│   ├── face_parsing.py        # Face segmentation utilities
+│   ├── audio.py               # Audio processing utilities
+│   ├── utilis.py              # General utilities (e.g., base64 conversion)
+│   ├── config.py              # Configuration settings (e.g., model paths)
+│   ├── schemas.py             # Pydantic schemas for input data
+│   ├── basicsr/               # Super-resolution related code 
+│   ├── checkpoints/           # Directory for pre-trained model files
+│   │   ├── wav2lip_gan.pth
+│   │   └── ... (other model files like segmentation, sr if used)
+│   ├── face_detection/        # Face detection model files and code
+│   ├── face_parsing/          # Face parsing/segmentation model files and code
+│   └── wav2lip_models/        # Wav2Lip model files
+├── input_image/               # Sample images for client testing
+│   └── Obama.jpg
+├── input_audios/              # Sample audio files for client testing
+│   └── ai.wav
+├── client.py                  # Example WebSocket client
+├── Dockerfile                 # Docker build instructions
+├── requirements.txt           # Python dependencies
+└── README.md                  # Project documentation
 ```
+
+---
 
 ## Prerequisites
 
@@ -112,6 +116,15 @@ It's assumed your project is structured as follows for the Docker build and loca
 | Real-ESRGAN       | Real-ESRGAN/gfpgan/weights/   | [Link](https://drive.google.com/drive/folders/1BLx6aMpHgFt41fJ27_cRmT8bt53kVAYG?usp=sharing) |
 | Real-ESRGAN       | Real-ESRGAN/weights/          | [Link](https://drive.google.com/file/d/1qNIf8cJl_dQo3ivelPJVWFkApyEAGnLi/view?usp=sharing) |
 
+Example for Wav2Lip:
+1.  Download `wav2lip_gan.pth` from [Link to Wav2Lip GAN model].
+2.  Download `s3fd_convert.pth` (for face detection) from [Link to S3FD model, if you use their detector].
+3.  Place them in a designated directory, e.g., `checkpoints/`:
+    ```
+    checkpoints/
+    ├── wav2lip_gan.pth
+    └── s3fd_convert.pth # or other face detector model
+    ```
 
 ### Configuration
 
@@ -126,24 +139,10 @@ class Settings(BaseSettings):
     wav2lip_path: str = "checkpoints/wav2lip_gan.pth"
     segmentation_path: str = "checkpoints/79999_iter.pth" # Example, if used
     sr_path: str = "checkpoints/your_sr_model.pth"      # Example, if used
-    device: str = "cuda" # or "cpu"
+    device: str =  "cuda" if torch.cuda.is_available() else "cpu"
 
 settings = Settings()
 ```
-
-### Downloading Pretrained Models
-
-Provide clear instructions on where to download the necessary pretrained model files (e.g., `.pth` for PyTorch models) and where to place them.
-
-Example for Wav2Lip:
-1.  Download `wav2lip_gan.pth` from [Link to Wav2Lip GAN model].
-2.  Download `s3fd_convert.pth` (for face detection) from [Link to S3FD model, if you use their detector].
-3.  Place them in a designated directory, e.g., `checkpoints/`:
-    ```
-    checkpoints/
-    ├── wav2lip_gan.pth
-    └── s3fd_convert.pth # or other face detector model
-    ```
 ---
 ## Running the Application
 
@@ -152,12 +151,11 @@ Example for Wav2Lip:
 2.  Navigate to the directory containing the app/ folder.
 3.  Run the FastAPI application using Uvicorn:
     ```
-    uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     ```
 ### Running with Docker
 
 1.  **Build the Docker image:**
-    From the root of the project directory (where your `Dockerfile` is):
     ```bash
     docker build -t lipsync-api .
     ```
@@ -174,6 +172,8 @@ Example for Wav2Lip:
     The API will be accessible at `ws://localhost:8000/ws/lipsync`.
 
     Download Pre-build Docker Image: ""
+
+3.  **Download the Docker image:**
     
 ---
 
