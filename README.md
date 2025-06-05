@@ -85,8 +85,8 @@ It's assumed your project is structured as follows for the Docker build and loca
 
 1.  **Clone the repository:**
     ```bash
-    git clone [Your Repository URL]
-    cd [repository-name]
+    git clone https://github.com/khoatran02/WebSocket_Lip-syncing.git
+    cd WebSocket_Lip-syncing
     ```
 
 2.  **Set up a Python virtual environment (recommended):**
@@ -100,7 +100,7 @@ It's assumed your project is structured as follows for the Docker build and loca
     ```bash
     pip install -r requirements.txt
     ```
-    Ensure all custom modules (e.g., `wav2lip_models`, `face_detection`) are correctly placed within the `app/` directory or are installable Python packages.
+    Ensure all pretrained modules (e.g., `wav2lip_models`, `face_detection`) are correctly placed within the `app/checkpoints` directory.
 
 ### Downloading Pretrained Models
 
