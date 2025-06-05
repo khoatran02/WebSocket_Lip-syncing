@@ -177,8 +177,8 @@ settings = Settings()
   ```
 
    * Method B: From .tar File
-    Download the image from [Google Drive](https://drive.google.com/drive/folders/1s0711lknaxdQWsTKvUk_RxV_xOkbrh81?usp=sharing)
-    Load and run:
+1. Download the image from [Google Drive](https://drive.google.com/drive/folders/1s0711lknaxdQWsTKvUk_RxV_xOkbrh81?usp=sharing)
+2. Load and run:
 
   ```bash
   docker load -i lipsync-api.tar
