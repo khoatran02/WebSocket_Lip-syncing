@@ -71,6 +71,7 @@ async def send_audio_image():
             logger.info("Image encoded to base64")
 
             audio_base64 = wav_to_base64("input_audios/ai.wav")
+            
             if not audio_base64:
                 raise ValueError("Failed to convert audio to base64")
             logger.info("Audio encoded to base64")
@@ -83,8 +84,6 @@ async def send_audio_image():
                 "pads": [0, 10, 0, 0],
                 "img_size": 96,
                 "batch_size": 128,
-                "segmentation": False,
-                "super_resolution": False,
             }
             
             # Send data with timeout

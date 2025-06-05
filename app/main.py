@@ -14,8 +14,6 @@ async def lifespan(app: FastAPI):
     # Load the ML model
     models.update(load_models(
         wav2lip_path=settings.wav2lip_path,
-        segmentation_path=settings.segmentation_path,
-        super_resolution_path=settings.sr_path,
         device=settings.device
     ))
     yield
@@ -43,8 +41,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 pads=input_data.pads,
                 img_size=input_data.img_size,
                 wav2lip_batch_size=input_data.batch_size,
-                segmentation=input_data.segmentation,
-                super_resolution=input_data.super_resolution,
             )
 
             print("Video processing completed")

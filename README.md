@@ -208,8 +208,6 @@ Send a JSON message with the following structure (as demonstrated in client.py):
   "pads": [0, 10, 0, 0],
   "img_size": 96,
   "batch_size": 128,
-  "no_segmentation": false,
-  "no_sr": false
 }
 ```
 * audio: Base64 encoded string of the WAV audio file.
@@ -218,8 +216,6 @@ Send a JSON message with the following structure (as demonstrated in client.py):
 * pads (list of int): Padding around the detected face [top, bottom, left, right].
 * img_size (int): The size to which the cropped face is resized before being fed into Wav2Lip (e.g., 96 for 96x96).
 * batch_size (int): Batch size for Wav2Lip inference.
-* no_segmentation (bool): Set to true to disable face segmentation (if the model is available and code enabled).
-* no_sr (bool): Set to true to disable super-resolution (if the model is available and code enabled).
 
 ### Output Format
 Successful Response:

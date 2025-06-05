@@ -15,7 +15,7 @@ import tempfile
 
 mel_step_size = 16
 
-def load_models(wav2lip_path, segmentation_path, super_resolution_path, device='cuda'):
+def load_models(wav2lip_path, device='cuda'):
     """Load all required models"""
     models = {}
     
@@ -138,8 +138,10 @@ def datagen(models, mels, image, pads, img_size, wav2lip_batch_size):
         
         yield img_batch_np, mel_batch_np, coords_batch
 
+
+
 def process_audio_image(models, input_data, fps=25., pads=[0, 10, 0, 0], 
-                       img_size=96, wav2lip_batch_size=128, segmentation=False, super_resolution=False):
+                       img_size=96, wav2lip_batch_size=128):
     
     """Process audio and image to generate lip-synced video"""
     device = next(models['wav2lip'].parameters()).device
@@ -183,11 +185,15 @@ def process_audio_image(models, input_data, fps=25., pads=[0, 10, 0, 0],
 
         # Generate frames
         for img_batch, mel_batch, coords in datagen(models, mel_chunks, image, pads, img_size, wav2lip_batch_size):
-            img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
-            mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
-            
-            with torch.no_grad():
-                pred = models["wav2lip"](mel_batch, img_batch)
+            if device=='cpu':
+                img_batch = np.transpose(img_batch, (0, 3, 1, 2))
+                mel_batch = np.transpose(mel_batch, (0, 3, 1, 2))
+                pred = models["wav2lip"].model([mel_batch, img_batch])['output']
+            else:
+                img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(device)
+                mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(device)
+                with torch.no_grad():
+                    pred = models["wav2lip"](mel_batch, img_batch)
             
             pred = pred.cpu().numpy().transpose(0, 2, 3, 1) * 255.
 
@@ -223,7 +229,6 @@ def process_audio_image(models, input_data, fps=25., pads=[0, 10, 0, 0],
         # subprocess.call(command, shell=True)
         subprocess.run(command, check=True)
 
-           
         # Convert output video to base64
         video_base64 = video_to_base64(video_path)
     
