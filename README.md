@@ -1,6 +1,6 @@
 # Real-Time Lip-Syncing WebSocket API
 
-Brief project description: This API uses [Chosen AI Model Name, e.g., Wav2Lip] to generate a lip-synced video from an input audio file and a person's image. Communication is handled via WebSockets.
+This project provides a real-time lip-syncing API powered by the Wav2Lip model. Built with FastAPI, it uses WebSockets to accurately synchronize video lip movements with any audio track, creating a realistic talking-head effect from a single image and speech file.
 
 ## Table of Contents
 - [How it Works](#how-it-works)
