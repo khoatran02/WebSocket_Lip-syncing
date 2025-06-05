@@ -6,3 +6,4 @@
 app/checkpoints/*
 run.py
 lipsync-api.tar
+output.mp4
