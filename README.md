@@ -108,13 +108,10 @@ It's assumed your project is structured as follows for the Docker build and loca
 
 ### Downloading Pretrained Models
 
-| Model        | Directory           | Download Link  |
+| Model        | Description           | Download Link  |
 | :------------- |:-------------| :-----:|
-| Wav2Lip           | [checkpoints/](https://github.com/saifhassan/Wav2Lip-HD/tree/main/checkpoints)   | [Link](https://drive.google.com/drive/folders/1tB_uz-TYMePRMZzrDMdShWUZZ0JK3SIZ?usp=sharing) |
-| ESRGAN            | [experiments/001_ESRGAN_x4_f64b23_custom16k_500k_B16G1_wandb/models/](https://github.com/saifhassan/Wav2Lip-HD/tree/main/experiments/001_ESRGAN_x4_f64b23_custom16k_500k_B16G1_wandb/models) | [Link](https://drive.google.com/file/d/1Al8lEpnx2K-kDX7zL2DBcAuDnSKXACPb/view?usp=sharing) |
-| Face_Detection    | [face_detection/detection/sfd/](https://github.com/saifhassan/Wav2Lip-HD/tree/main/face_detection/detection/sfd) | [Link](https://drive.google.com/file/d/1uNLYCPFFmO-og3WSHyFytJQLLYOwH5uY/view?usp=sharing) |
-| Real-ESRGAN       | Real-ESRGAN/gfpgan/weights/   | [Link](https://drive.google.com/drive/folders/1BLx6aMpHgFt41fJ27_cRmT8bt53kVAYG?usp=sharing) |
-| Real-ESRGAN       | Real-ESRGAN/weights/          | [Link](https://drive.google.com/file/d/1qNIf8cJl_dQo3ivelPJVWFkApyEAGnLi/view?usp=sharing) |
+| Wav2Lip           | Lip-sync model weights   | [Link](https://drive.google.com/drive/folders/1tB_uz-TYMePRMZzrDMdShWUZZ0JK3SIZ?usp=sharing) |
+| Face_Detection    | Face detection model weights | [Link](https://drive.google.com/file/d/1uNLYCPFFmO-og3WSHyFytJQLLYOwH5uY/view?usp=sharing) |
 
 Example for Wav2Lip:
 1.  Download `wav2lip_gan.pth` from [Link to Wav2Lip GAN model].
