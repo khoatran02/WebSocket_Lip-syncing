@@ -42,6 +42,7 @@ Models (Wav2Lip, face detector, and optional face segmentation/super-resolution)
 ## Project Structure
 
 It's assumed your project is structured as follows for the Docker build and local execution (especially `main.py` and other modules being inside an `app` directory):
+```
 .
 ├── app/
 │   ├── main.py                 # FastAPI application
@@ -65,7 +66,7 @@ It's assumed your project is structured as follows for the Docker build and loca
 ├── Dockerfile
 ├── requirements.txt
 └── README.md
-
+```
 
 ## Prerequisites
 
@@ -75,8 +76,6 @@ It's assumed your project is structured as follows for the Docker build and loca
 * For GPU support:
     * NVIDIA drivers on the host machine.
     * NVIDIA Container Toolkit installed on the host.
-
----
 
 ---
 
