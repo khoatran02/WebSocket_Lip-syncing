@@ -146,14 +146,14 @@ settings = Settings()
 ---
 ## Running the Application
 
-### Locally
+### Option 1: Local Installation
 1.  Ensure all dependencies and pretrained models are installed/downloaded and configured.
 2.  Navigate to the directory containing the app/ folder.
 3.  Run the FastAPI application using Uvicorn:
     ```
     uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     ```
-### Running with Docker
+### Option 2: Docker Installation
 
 1.  **Build the Docker image:**
     ```bash
@@ -169,12 +169,29 @@ settings = Settings()
         ```bash
         docker run -d --gpus all -p 8000:8000 --name lipsync-app lipsync-api
         ```
-    The API will be accessible at `ws://localhost:8000/ws/lipsync`.
+### Option 3: Using Pre-built Images
+   * Method A: From Docker Hub
+  ```bash
+  docker pull khoatran2002/lipsync-api:latest
+  docker run -d -p 8000:8000 --name lipsync-app khoatran2002/lipsync-api:latest
+  ```
 
-3.  **Download Pre-built Docker Image**
-     * [Docker Hub](https://hub.docker.com/repository/docker/khoatran2002/lipsync-api)
-     * [.tar File](https://drive.google.com/drive/folders/1s0711lknaxdQWsTKvUk_RxV_xOkbrh81?usp=sharing)
-    
+   * Method B: From .tar File
+    Download the image from [Google Drive](https://drive.google.com/drive/folders/1s0711lknaxdQWsTKvUk_RxV_xOkbrh81?usp=sharing)
+    Load and run:
+
+  ```bash
+  docker load -i lipsync-api.tar
+  docker run -d -p 8000:8000 --name lipsync-app lipsync-api:latest
+  ```
+### Verify operation
+
+```bash
+docker logs lipsync-app
+```
+
+The API will be accessible at `ws://localhost:8000/ws/lipsync`.
+
 ---
 
 ## API Usage
