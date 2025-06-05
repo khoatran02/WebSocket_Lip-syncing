@@ -2,4 +2,4 @@
 # input_images
 # output
 # test
-app/checkpoints/
+app/checkpoints/*
