@@ -134,8 +134,6 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     wav2lip_path: str = "checkpoints/wav2lip_gan.pth"
-    segmentation_path: str = "checkpoints/79999_iter.pth" # Example, if used
-    sr_path: str = "checkpoints/your_sr_model.pth"      # Example, if used
     device: str =  "cuda" if torch.cuda.is_available() else "cpu"
 
 settings = Settings()
