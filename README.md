@@ -35,8 +35,8 @@ The system enables real-time lip-syncing through a WebSocket interface:
 5.  The generated video (without audio) is then combined with the original input audio using `ffmpeg` to create a final MP4 video.
 6.  This final MP4 video is encoded into a base64 string.
 7.  The server sends a JSON response back to the client over WebSocket, containing the base64 encoded video and a status message.
-
 Models (Wav2Lip, face detector, and optional face segmentation/super-resolution) are loaded once at application startup for efficiency.
+
 ---
 
 ## Project Structure
@@ -154,8 +154,6 @@ Example for Wav2Lip:
     ├── wav2lip_gan.pth
     └── s3fd_convert.pth # or other face detector model
     ```
-    *Ensure your `main.py` (or the model's inference script it calls) knows where to find these files.*
-
 ---
 ## Running the Application
 
@@ -194,9 +192,70 @@ Example for Wav2Lip:
 (e.g., `ws://localhost:8000/ws/lipsync` when running locally or in Docker)
 
 ### Input Format
-Send a JSON message with the following structure:
+Send a JSON message with the following structure (as demonstrated in client.py):
+
 ```json
 {
-  "audio": "<base64_encoded_audio_bytes>",
-  "image": "<base64_encoded_image_bytes>"
+  "audio": "<base64_encoded_audio_bytes_wav_format>",
+  "image": "<base64_encoded_image_bytes_jpg_or_png>",
+  "fps": 25.0,
+  "pads": [0, 10, 0, 0],
+  "img_size": 96,
+  "batch_size": 128,
+  "no_segmentation": false,
+  "no_sr": false
 }
+```
+* audio: Base64 encoded string of the WAV audio file.
+* image: Base64 encoded string of the person image (e.g., PNG, JPG). The image should ideally contain one clear frontal face.
+* fps (float): Frames per second for the output video.
+* pads (list of int): Padding around the detected face [top, bottom, left, right].
+* img_size (int): The size to which the cropped face is resized before being fed into Wav2Lip (e.g., 96 for 96x96).
+* batch_size (int): Batch size for Wav2Lip inference.
+* no_segmentation (bool): Set to true to disable face segmentation (if the model is available and code enabled).
+* no_sr (bool): Set to true to disable super-resolution (if the model is available and code enabled).
+
+### Output Format
+Successful Response:
+```json
+{
+  "status": "success",
+  "video": "<base64_encoded_video_bytes_mp4>"
+}
+```
+* video: Base64 encoded string of the generated MP4 video.
+Error Response:
+```json
+{
+  "status": "success",
+  "video": "<base64_encoded_video_bytes_mp4>"
+}
+```
+
+### Testing with a WebSocket Client
+
+You can use the provided client.py to test the API.
+
+1.  Ensure the FastAPI server is running (either locally or in Docker).
+2.  Place sample files:
+* Put a sample image (e.g., Obama.jpg) in an input_image/ directory relative to where you run client.py.
+* Put a sample audio file (e.g., ai.wav) in an input_audios/ directory relative to where you run client.py.
+* Update the paths in client.py if your files are named or located differently.
+
+3. Run the client script:
+```
+python client.py
+```
+The client will:
+* Encode the sample image and audio to base64.
+* Send the data to the WebSocket server.
+* Receive the response.
+* If successful, decode the base64 video and save it as output.mp4 in the same directory where client.py is run.
+* Log messages about the process.
+
+
+
+
+
+
+
